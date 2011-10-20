@@ -5,25 +5,11 @@ namespace Devnos.Popover
 {
 	public class PopoverImage
 	{
-		public static string BackgroundImage = NSBundle.MainBundle.PathForResource("", "png");
-		public static string UpArrowImage = NSBundle.MainBundle.PathForResource("", "png");
-		public static string DownArrowImage = NSBundle.MainBundle.PathForResource("", "png");
-		public static string LeftArrowImage = NSBundle.MainBundle.PathForResource("", "png");
-		public static string RightArrowImage = NSBundle.MainBundle.PathForResource("", "png");
-			
-			/*
-			 * 
-			 * 
-
-@property(nonatomic, retain) NSString *bgImageName;
-@property(nonatomic, retain) NSString *upArrowImageName;
-@property(nonatomic, retain) NSString *downArrowImageName;
-@property(nonatomic, retain) NSString *leftArrowImageName;
-@property(nonatomic, retain) NSString *rightArrowImageName;
-
-			 * 
-			 * 
-			 */
+		public static string BackgroundImage = NSBundle.MainBundle.PathForResource("Images/popoverBg", "png");
+		public static string UpArrowImage = NSBundle.MainBundle.PathForResource("Images/popoverArrowUp", "png");
+		public static string DownArrowImage = NSBundle.MainBundle.PathForResource("Images/popoverArrowDown", "png");
+		public static string LeftArrowImage = NSBundle.MainBundle.PathForResource("Images/popoverArrowLeft", "png");
+		public static string RightArrowImage = NSBundle.MainBundle.PathForResource("Images/popoverArrowRight", "png");
 	}
 }
 
