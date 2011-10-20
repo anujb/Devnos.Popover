@@ -33,6 +33,6 @@ Global
 		{A315FB74-F698-404B-9F1D-D33DADE5ED09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Devnos.Popover\Devnos.Popover.csproj
+		StartupItem = Devnos.Popover.Sample\Devnos.Popover.Sample.csproj
 	EndGlobalSection
 EndGlobal

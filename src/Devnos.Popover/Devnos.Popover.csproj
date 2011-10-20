@@ -41,10 +41,16 @@
     <Folder Include="ViewControllers\" />
     <Folder Include="Images\" />
     <Folder Include="Model\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PopoverImage.cs" />
     <Compile Include="Views\PopoverContainerView.cs" />
     <Compile Include="Model\PopoverContainerModel.cs" />
+    <Compile Include="Extensions\RectangleFExtensions.cs" />
+    <Compile Include="ViewControllers\PopoverController.cs" />
+    <Compile Include="ViewControllers\IPopoverController.cs" />
+    <Compile Include="Views\TouchableView.cs" />
+    <Compile Include="Views\IPopoverParentView.cs" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@ namespace Devnos.Popover
 	{
 		public UIView ContentView { get; set; }
 		public PopoverContainerModel Properties { get; private set; }
+		public SizeF ContentSize { get { return CalculateContentRect().Size; } }
 		
 		UIImage _BackgroundImage;
 		UIImage _ArrowImage;
@@ -20,6 +21,7 @@ namespace Devnos.Popover
 		PointF _ArrowOffset;
 		
 		SizeF _CorrectedSize;
+		
 		
 		public UIPopoverArrowDirection PopoverArrowDirection { get; set; }
 		
@@ -36,17 +38,76 @@ namespace Devnos.Popover
 			_CorrectedSize = new SizeF(size.Width + properties.LeftBgMargin + properties.RightBgMargin + properties.LeftContentMargin + properties.RightContentMargin,
 				size.Height + properties.TopBgMargin + properties.BottomBgMargin + properties.TopContentMargin + properties.BottomContentMargin);
 			
+			DetermineGeometryForSize(size, anchor, displayArea, arrowDirection);
+			InitializeFrame();
+			this.BackgroundColor = UIColor.Clear;
+			
+			var image = UIImage.FromFile( properties.BackgroundImage ?? PopoverImage.BackgroundImage);
+			this._BackgroundImage = image.StretchableImage(properties.LeftBgCapSize, properties.TopBgCapSize);
+			
+			this.ClipsToBounds = true;
+			this.UserInteractionEnabled = true;
+		}
+		
+		public void InitializeFrame()
+		{
+			var unionFrame = _BackgroundFrame.UnionWith(_ArrowFrame);
+			var frame = unionFrame.RectOffset(_Offset.X, _Offset.Y);
+			
+			_ArrowOffset = new PointF(Math.Max(0, -_ArrowFrame.X), Math.Max(0, -_ArrowFrame.Y));
+			_BackgroundFrame = _BackgroundFrame.RectOffset(_ArrowOffset);
+			_ArrowFrame = _ArrowFrame.RectOffset(_ArrowOffset);
+			
+			
+			this.Frame = frame;
+		}
+		
+		public void UpdatePositionWithAnchorRect(RectangleF anchorRect, RectangleF displayArea, UIPopoverArrowDirection arrowDirections)
+		{
+			DetermineGeometryForSize(_CorrectedSize, anchorRect, displayArea, arrowDirections);
+			InitializeFrame();
+		}
+		
+		public override bool PointInside(PointF point, UIEvent uievent)
+		{
+			return this.CalculateContentRect().Contains(point);
+		}
+		
+		public RectangleF CalculateContentRect()
+		{
+			var x = Properties.LeftBgMargin + Properties.LeftContentMargin + _ArrowOffset.X;
+			var y = Properties.TopBgMargin + Properties.TopContentMargin + _ArrowOffset.Y;
+			
+			var width = _BackgroundFrame.Size.Width - Properties.LeftBgMargin - Properties.RightBgMargin 
+				- Properties.LeftContentMargin - Properties.RightContentMargin;
+			var height = _BackgroundFrame.Size.Height - Properties.TopBgMargin - Properties.BottomBgMargin - Properties.TopContentMargin - Properties.BottomContentMargin;
+			
+			return new RectangleF(x, y, width, height);
 			
 		}
 		
-		public void Initialize()
+		public void SetContentView(UIView view)
 		{
-			
+			if(view != this.ContentView) {
+				this.ContentView = view;
+				this.ContentView.Frame = this.CalculateContentRect();
+				this.AddSubview(ContentView);
+			}
+		}
+		
+		public override void Draw(RectangleF rect)
+		{
+			base.Draw(rect);
+			_BackgroundImage.Draw(_BackgroundFrame, CGBlendMode.Normal, 1.0f);
+			_ArrowImage.Draw(_ArrowFrame, CGBlendMode.Normal, 1.0f);
 		}
 		
 		public void DetermineGeometryForSize(SizeF size, RectangleF anchorFrame, RectangleF displayFrame, UIPopoverArrowDirection arrowDirection)
 		{
 			var tempArrowDirection = UIPopoverArrowDirection.Up;
+			
+			var biggestSurface = 0.0f;
+			var currentMinMargin = 0.0f;
 			
 			var upArrowImage = UIImage.FromBundle(this.Properties.UpArrowImage ?? PopoverImage.UpArrowImage);
 			var downArrowImage = UIImage.FromBundle(this.Properties.DownArrowImage ?? PopoverImage.DownArrowImage);
@@ -191,12 +252,52 @@ namespace Devnos.Popover
 				}
 				
 				if(minMarginRight < 0) {
-					
+					backgroundFrame.Size.Width += minMarginRight;
+					minMarginTop = 0;
+					if(arrowDirection == UIPopoverArrowDirection.Left)
+						arrowFrame.X = backgroundFrame.GetMinX() + leftArrowImage.Size.Width + this.Properties.LeftBgMargin;
 				}
 				
+				if(minMarginTop < 0) {
+				    // Popover is too high and clipped at the top; decrease height
+				    // and move it down
+					offset.Y -= minMarginTop;
+					backgroundFrame.Size.Height += minMarginTop;
+					minMarginTop = 0;
+					
+					if(arrowDirection == UIPopoverArrowDirection.Down)
+						arrowFrame.Y = backgroundFrame.GetMaxY() - Properties.BottomBgMargin;
+				}
 				
+				if(minMarginBottom < 0) {
+					backgroundFrame.Size.Height += minMarginBottom;
+					minMarginBottom = 0;
+					if(arrowDirection ==  UIPopoverArrowDirection.Up)
+						arrowFrame.Y = backgroundFrame.GetMinY() - upArrowImage.Size.Height + this.Properties.TopBgMargin;
+				}
 				
+				var tmpbgFrame = backgroundFrame;
+				tmpbgFrame.Offset(offset.X, offset.Y);
+				bgFrame = tmpbgFrame;
 				
+				var minMargin = Math.Min(minMarginLeft, minMarginRight);
+				minMargin = Math.Min(minMargin, minMarginTop);
+				minMargin = Math.Min(minMargin, minMarginBottom);
+				
+				// Calculate intersection and surface
+				var intersection = RectangleF.Intersect(displayFrame, bgFrame);
+				var surface = intersection.Size.Width * intersection.Size.Height;
+				
+				if(surface >= biggestSurface && minMargin >= currentMinMargin) {
+					biggestSurface = surface;
+					_Offset = offset;
+					_ArrowFrame = arrowFrame;
+					_BackgroundFrame = backgroundFrame;
+					PopoverArrowDirection = arrowDirection;
+					currentMinMargin = minMargin;
+				}
+				
+				arrowDirection = (UIPopoverArrowDirection)((int)arrowDirection << 1);
 			};
 			
 			switch (arrowDirection) {

@@ -1,18 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Devnos.Popover/Views/PopoverContainerView.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Devnos.Popover.Sample/AppDelegate.cs">
     <Files>
-      <File FileName="Devnos.Popover/Views/PopoverContainerView.cs" Line="194" Column="6" />
+      <File FileName="Devnos.Popover/Views/PopoverContainerView.cs" Line="11" Column="24" />
+      <File FileName="Devnos.Popover/ViewControllers/PopoverController.cs" Line="67" Column="17" />
+      <File FileName="Devnos.Popover.Sample/AppDelegate.cs" Line="31" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Devnos.Popover" expanded="True">
+            <Node name="Extensions" expanded="True" />
             <Node name="Model" expanded="True" />
-            <Node name="Views" expanded="True">
-              <Node name="PopoverContainerView.cs" selected="True" />
-            </Node>
+            <Node name="ViewControllers" expanded="True" />
+            <Node name="Views" expanded="True" />
           </Node>
+          <Node name="Devnos.Popover.Sample" expanded="True" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -21,7 +24,9 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/abhatia/projects/monotouch/personal/Devnos.Popover/src/Devnos.Popover.Sample/AppDelegate.cs" line="29" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
