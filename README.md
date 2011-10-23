@@ -1,4 +1,4 @@
-<h3>Devnos.Popover</h3>
+<h1>Devnos.Popover</h1>
 
 A generic popover re-implementation for MonoTouch inspired by the good folks at [WEPopover] (https://github.com/werner77/WEPopover)
 
