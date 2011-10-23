@@ -65,9 +65,68 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="ViewControllers\RootViewController.cs" />
+    <Compile Include="PopoverController\SamplePopover.cs" />
+    <Compile Include="ViewControllers\ImageContentController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="ViewControllers\" />
+    <Folder Include="PopoverController\" />
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Devnos.Popover\Devnos.Popover.csproj">
+      <Project>{A315FB74-F698-404B-9F1D-D33DADE5ED09}</Project>
+      <Name>Devnos.Popover</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\dave.png" />
+    <Content Include="..\Devnos.Popover\Images\popoverArrowDown.png">
+      <Link>Images\popoverArrowDown.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowDown%402x.png">
+      <Link>Images\popoverArrowDown%402x.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowDownSimple.png">
+      <Link>Images\popoverArrowDownSimple.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowLeft.png">
+      <Link>Images\popoverArrowLeft.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowLeft%402x.png">
+      <Link>Images\popoverArrowLeft%402x.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowLeftSimple.png">
+      <Link>Images\popoverArrowLeftSimple.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowRight.png">
+      <Link>Images\popoverArrowRight.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowRight%402x.png">
+      <Link>Images\popoverArrowRight%402x.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowRightSimple.png">
+      <Link>Images\popoverArrowRightSimple.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowUp.png">
+      <Link>Images\popoverArrowUp.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowUp%402x.png">
+      <Link>Images\popoverArrowUp%402x.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverArrowUpSimple.png">
+      <Link>Images\popoverArrowUpSimple.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverBg.png">
+      <Link>Images\popoverBg.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverBg%402x.png">
+      <Link>Images\popoverBg%402x.png</Link>
+    </Content>
+    <Content Include="..\Devnos.Popover\Images\popoverBgSimple.png">
+      <Link>Images\popoverBgSimple.png</Link>
+    </Content>
   </ItemGroup>
 </Project>

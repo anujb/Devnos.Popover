@@ -58,7 +58,7 @@ namespace Devnos.Popover
 			if (view == null) {
 				return false;
 			}
-			if (PassthroughViews.Contains(view)) {
+			else if (PassthroughViews.Contains(view)) {
 				return true;
 			}
 			else {

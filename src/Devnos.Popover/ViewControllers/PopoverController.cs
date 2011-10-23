@@ -13,6 +13,7 @@ namespace Devnos.Popover
 		
 		public UIViewController ContentViewController { get; set; }
 		public TouchableView BackgroundView { get; set; }
+		public PopoverContainerModel Properties { get; set; }
 		
 		public bool IsPopoverVisible { get; private set; }
 		public UIPopoverArrowDirection ArrowDirection { get; private set; }
@@ -28,13 +29,11 @@ namespace Devnos.Popover
 				UpdateBackgroundPassthroughViews();
 			}
 		}
-			
 		
 		public Action<IPopoverController> DidDismiss { get; set; }
 		public Func<IPopoverController, bool> ShouldDismiss { get; set; }
 		
 		UIView View;
-		PopoverContainerModel Properties;
 		
 		public PopoverController()
 			: base()
@@ -53,7 +52,9 @@ namespace Devnos.Popover
 			this.DismissPopover(false);
 			
 			//obj-C selector calls [vc getView] which calls loadView
-			if(this.ContentViewController.View == null) { }
+			if(this.ContentViewController.View != null) { 
+				Console.WriteLine("Called ContentViewController.LoadView() with view getter");
+			}
 			
 			if(this.ContentSize == SizeF.Empty) {
 				this.ContentSize = this.ContentViewController.ContentSizeForViewInPopover;	
@@ -79,6 +80,10 @@ namespace Devnos.Popover
 					UIViewAutoresizing.FlexibleBottomMargin;
 			
 			keyView.AddSubview(containerView);
+			
+			containerView.Frame = inView.ConvertRectToView(containerView.Frame, BackgroundView);
+			BackgroundView.AddSubview(containerView);
+			
 			containerView.ContentView = ContentViewController.View;
 			containerView.AutoresizingMask = UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin;
 			
@@ -107,6 +112,7 @@ namespace Devnos.Popover
 		
 		public void ViewWasTouched(TouchableView view)
 		{
+			Console.WriteLine("Touchable View was touched");
 			if (IsPopoverVisible) {
 				if(ShouldDismiss != null)
 					if(ShouldDismiss(this))
@@ -120,7 +126,7 @@ namespace Devnos.Popover
 			var containerView = (PopoverContainerView)this.View;
 			
 			containerView.UpdatePositionWithAnchorRect(rect, displayArea, arrowDirection);
-			containerView.Frame = View.ConvertRectToView(containerView.Frame, this.BackgroundView);
+			containerView.Frame = inView.ConvertRectToView(containerView.Frame, this.BackgroundView);
 			ArrowDirection = arrowDirection;
 		}
 		
@@ -144,7 +150,8 @@ namespace Devnos.Popover
 		public void DismissPopover(bool animated, bool userInitiated)
 		{
 			if(this.View != null) {
-				ContentViewController.DismissViewController(animated, null);
+				
+				ContentViewController.ViewWillDisappear(animated);
 				this.IsPopoverVisible = false;
 				this.View.ResignFirstResponder();
 				
