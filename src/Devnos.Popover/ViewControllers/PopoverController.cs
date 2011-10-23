@@ -227,8 +227,8 @@ namespace Devnos.Popover
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing) {
-//				UIView.AnimationWillEnd -= HandleAnimationWillEnd_FadeIn;
-//				UIView.AnimationWillEnd -= HandleAnimationWillEnd_FadeOut;
+				DidDismiss = null;
+				ShouldDismiss = null;
 			}
 			base.Dispose(disposing);
 		}
