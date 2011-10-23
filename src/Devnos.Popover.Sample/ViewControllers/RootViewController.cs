@@ -16,7 +16,7 @@ namespace Devnos.Popover.Sample
 		public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
-			this.View.BackgroundColor = UIColor.White;
+			this.View.BackgroundColor = UIColor.Blue;
 			
 			_ImageController = new ImageContentController();
 			
@@ -26,9 +26,9 @@ namespace Devnos.Popover.Sample
 			_RootButton.TouchUpInside += (sender, e) => {
 				
 				SamplePopover.ContentSize = new SizeF(600, 450);
-				SamplePopover.ContentController = _ImageController;
-				var rect = _RootButton.Frame;
-				SamplePopover.PresentFromRect(rect, this.View, UIPopoverArrowDirection.Left);
+//				SamplePopover.ContentController = _ImageController;
+				SamplePopover.ContentController = new UIViewController() { ContentSizeForViewInPopover = SamplePopover.ContentSize };
+				SamplePopover.PresentFromRect(_RootButton.Frame, this.View, UIPopoverArrowDirection.Right);
 				
 			};
 			this.View.AddSubview(_RootButton);
@@ -37,6 +37,11 @@ namespace Devnos.Popover.Sample
 		public override void ViewDidAppear(bool animated)
 		{
 			base.ViewDidAppear(animated);
+		}
+		
+		public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation toInterfaceOrientation)
+		{
+			return true;
 		}
 	}
 }

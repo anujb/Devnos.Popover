@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Devnos.Popover.Sample/PopoverController/SamplePopover.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Devnos.Popover.Sample/ViewControllers/RootViewController.cs">
     <Files>
-      <File FileName="Devnos.Popover.Sample/ViewControllers/RootViewController.cs" Line="31" Column="36" />
-      <File FileName="Devnos.Popover.Sample/PopoverController/SamplePopover.cs" Line="11" Column="20" />
+      <File FileName="Devnos.Popover.Sample/ViewControllers/RootViewController.cs" Line="30" Column="20" />
+      <File FileName="Devnos.Popover/ViewControllers/PopoverController.cs" Line="161" Column="41" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,15 +20,18 @@
               <Option id="ShowVersionControlOverlays" value="True" />
               <Option id="ShowAllFiles" value="False" />
             </Node>
-            <Node name="PopoverController" expanded="True">
-              <Node name="SamplePopover.cs" selected="True" />
+            <Node name="PopoverController" expanded="True" />
+            <Node name="ViewControllers" expanded="True">
+              <Node name="RootViewController.cs" selected="True" />
             </Node>
-            <Node name="ViewControllers" expanded="True" />
           </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

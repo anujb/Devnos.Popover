@@ -20,12 +20,12 @@ namespace Devnos.Popover
 		public SizeF ContentSize { get; set; }
 		public object Context { get; set; }
 		
-		IEnumerable<UIView> _PassthroughViews;
+		List<UIView> _PassthroughViews;
 		public IEnumerable<UIView> PassthroughViews 
 		{
 			get { return _PassthroughViews; }
 			set {
-				_PassthroughViews = value;
+				_PassthroughViews = value.ToList();
 				UpdateBackgroundPassthroughViews();
 			}
 		}
@@ -79,12 +79,13 @@ namespace Devnos.Popover
 					UIViewAutoresizing.FlexibleHeight |
 					UIViewAutoresizing.FlexibleBottomMargin;
 			
-			keyView.AddSubview(containerView);
 			
-			containerView.Frame = inView.ConvertRectToView(containerView.Frame, BackgroundView);
+			keyView.AddSubview(BackgroundView);
+			
+			containerView.Frame = inView.ConvertRectFromView(containerView.Frame, BackgroundView);
 			BackgroundView.AddSubview(containerView);
 			
-			containerView.ContentView = ContentViewController.View;
+			containerView.SetContentView(ContentViewController.View);
 			containerView.AutoresizingMask = UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin;
 			
 			this.View = containerView;
@@ -96,10 +97,11 @@ namespace Devnos.Popover
 			if(animated) {
 				this.View.Alpha = 0.0f;
 				
-				UIView.BeginAnimations("FadeIn");
+				UIView.BeginAnimations("FadeIn", IntPtr.Zero);
 				UIView.SetAnimationDuration(FadeDuration);
-				UIView.AnimationWillEnd += HandleAnimationWillEnd_FadeIn;
-				
+				UIView.SetAnimationDelegate(this);
+			    UIView.SetAnimationDidStopSelector(new MonoTouch.ObjCRuntime.Selector("animationDidStop:finished:context:"));
+
 				this.View.Alpha = 1.0f;
 				
 				UIView.CommitAnimations();
@@ -113,10 +115,11 @@ namespace Devnos.Popover
 		public void ViewWasTouched(TouchableView view)
 		{
 			Console.WriteLine("Touchable View was touched");
-			if (IsPopoverVisible) {
-				if(ShouldDismiss != null)
-					if(ShouldDismiss(this))
+			if (IsPopoverVisible && ShouldDismiss != null) {
+					if(ShouldDismiss(this)) {
+						Console.WriteLine("Dismissed Popover");
 						DismissPopover(true, true);
+					}
 			}
 		}
 		
@@ -148,17 +151,20 @@ namespace Devnos.Popover
 		}
 		
 		public void DismissPopover(bool animated, bool userInitiated)
-		{
+		{	
 			if(this.View != null) {
 				
 				ContentViewController.ViewWillDisappear(animated);
 				this.IsPopoverVisible = false;
 				this.View.ResignFirstResponder();
 				
+				var userInitiatedString = userInitiated ? bool.TrueString : bool.FalseString;
+				
 				if(animated) {
 					this.View.UserInteractionEnabled = false;
-					UIView.BeginAnimations("FadeOut");
-					UIView.AnimationWillEnd += HandleAnimationWillEnd_FadeOut;
+					UIView.BeginAnimations("FadeOut", new NSString(userInitiatedString).Handle);
+					UIView.SetAnimationDelegate(this);
+				    UIView.SetAnimationDidStopSelector(new MonoTouch.ObjCRuntime.Selector ("animationDidStop:finished:context:"));
 					UIView.SetAnimationDuration(FadeDuration);
 					
 					this.View.Alpha = 0.0f;
@@ -168,8 +174,8 @@ namespace Devnos.Popover
 				else {
 					this.ContentViewController.ViewDidDisappear(animated);
 					this.View.RemoveFromSuperview();
-					
 					this.View = null;
+					
 					BackgroundView.RemoveFromSuperview();
 					BackgroundView.Dispose();
 					BackgroundView = null;
@@ -177,31 +183,37 @@ namespace Devnos.Popover
 			}
 		}
 		
-		public void HandleAnimationWillEnd_FadeOut()
+		[Export ("animationDidStop:finished:context:")]
+		public void Handle_AnimationDidStop(NSString animationId, NSNumber finished, NSString boolString)
 		{
-			IsPopoverVisible = false;
-			this.ContentViewController.ViewDidDisappear(true);
+			if(animationId == new NSString(@"FadeIn")) {
+				this.View.UserInteractionEnabled = true;
+				this.IsPopoverVisible = true;
+				this.ContentViewController.ViewDidAppear(true);
+			}
+			else if (animationId == new NSString(@"FadeOut")) {
+				IsPopoverVisible = false;
+				this.ContentViewController.ViewDidDisappear(true);
+				
+				this.View.RemoveFromSuperview();
+//				this.View.Dispose();
+//				this.View = null;
+				
+				BackgroundView.RemoveFromSuperview();
+//				BackgroundView.Dispose();
+//				BackgroundView = null;
+				
+				if(this.DidDismiss != null)
+					DidDismiss(this);
+				}
 			
-			this.View.RemoveFromSuperview();
-			this.View.Dispose();
-			
-			BackgroundView.RemoveFromSuperview();
-			BackgroundView.Dispose();
-			
-			if(this.DidDismiss != null)
-				DidDismiss(this);
-		}
-		
-		public void HandleAnimationWillEnd_FadeIn()
-		{
-			this.View.UserInteractionEnabled = true;
-			this.IsPopoverVisible = true;
-			this.ContentViewController.ViewDidAppear(true);
 		}
 		
 		public void UpdateBackgroundPassthroughViews()
 		{
-			BackgroundView.PassthroughViews = this.PassthroughViews;
+			if(this.PassthroughViews != null && BackgroundView != null) {
+				BackgroundView.PassthroughViews = _PassthroughViews;
+			}
 		}
 		
 		public UIView GetKeyView()
@@ -217,8 +229,8 @@ namespace Devnos.Popover
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing) {
-				UIView.AnimationWillEnd -= HandleAnimationWillEnd_FadeIn;
-				UIView.AnimationWillEnd -= HandleAnimationWillEnd_FadeOut;
+//				UIView.AnimationWillEnd -= HandleAnimationWillEnd_FadeIn;
+//				UIView.AnimationWillEnd -= HandleAnimationWillEnd_FadeOut;
 			}
 			base.Dispose(disposing);
 		}

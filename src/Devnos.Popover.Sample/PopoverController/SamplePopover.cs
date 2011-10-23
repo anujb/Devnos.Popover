@@ -23,10 +23,16 @@ namespace Devnos.Popover.Sample
 			set { _Popover.ContentSize = value; }
 		}
 		
+		public static Func<IPopoverController, bool> ShouldDismissAction {
+			get { return _Popover.ShouldDismiss; }
+			set { _Popover.ShouldDismiss = value; }
+		}
+		
 		public static void Initialize()
 		{
 			if(!IsInitialized) {
 				_Popover = new PopoverController();
+				_Popover.ShouldDismiss = (controller) => { return true; };
 			}
 		}
 		
@@ -34,6 +40,7 @@ namespace Devnos.Popover.Sample
 		{
 			if(!IsInitialized) {
 				_Popover = new PopoverController();
+				_Popover.ShouldDismiss = (controller) => { return true; };
 				_Popover.Properties = properties;
 			}
 		}
@@ -42,7 +49,7 @@ namespace Devnos.Popover.Sample
 		{
 			using(var pool = new NSAutoreleasePool()) {
 			pool.BeginInvokeOnMainThread(()=> {
-					_Popover.PresentPopover(rect, inView, arrowDirection, false);
+					_Popover.PresentPopover(rect, inView, arrowDirection, true);
 				});
 			}
 		}

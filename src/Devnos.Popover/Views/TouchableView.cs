@@ -10,7 +10,7 @@ namespace Devnos.Popover
 	public class TouchableView : UIView
 	{
 		public bool IsTouchForwardingDisabled { get; set; }
-		public IEnumerable<UIView> PassthroughViews { get; set; }
+		public List<UIView> PassthroughViews { get; set; }
 		public Action<TouchableView> ViewWasTouched { get; set; }
 		
 		bool ShouldTestHits;
@@ -18,7 +18,7 @@ namespace Devnos.Popover
 		public TouchableView()
 			: base()
 		{
-			
+			this.PassthroughViews = new List<UIView> { };
 		}
 		
 		public override UIView HitTest(PointF point, UIEvent uievent)
