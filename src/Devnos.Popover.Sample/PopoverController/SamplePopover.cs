@@ -11,8 +11,6 @@ namespace Devnos.Popover.Sample
 		static bool IsInitialized = false;
 		static PopoverController _Popover;
 		
-		public static Action PopoverDidDismiss { get; set; }
-		
 		public static UIViewController ContentController { 
 			get { return _Popover.ContentViewController; }
 			set { _Popover.ContentViewController = value; }
@@ -26,6 +24,11 @@ namespace Devnos.Popover.Sample
 		public static Func<IPopoverController, bool> ShouldDismissAction {
 			get { return _Popover.ShouldDismiss; }
 			set { _Popover.ShouldDismiss = value; }
+		}
+		
+		public static Action<IPopoverController> PopoverDidDismissAction {
+			get { return _Popover.DidDismiss; }
+			set { _Popover.DidDismiss = value; }
 		}
 		
 		public static void Initialize()
@@ -47,6 +50,14 @@ namespace Devnos.Popover.Sample
 		
 		public static void PresentFromRect(RectangleF rect, UIView inView, UIPopoverArrowDirection arrowDirection)
 		{
+			if(_Popover.ShouldDismiss == null) {
+				_Popover.ShouldDismiss += (controller) => { return true; };
+			}
+			
+			if(_Popover.DidDismiss == null) {
+				_Popover.DidDismiss += (controller) => { Console.WriteLine("Popover Did Dismiss"); };
+			}
+			
 			using(var pool = new NSAutoreleasePool()) {
 			pool.BeginInvokeOnMainThread(()=> {
 					_Popover.PresentPopover(rect, inView, arrowDirection, true);

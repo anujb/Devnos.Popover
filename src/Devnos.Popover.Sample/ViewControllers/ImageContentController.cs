@@ -6,8 +6,6 @@ namespace Devnos.Popover.Sample
 {
 	public class ImageContentController : UIViewController
 	{
-		UIImageView _ImageView;
-		
 		public ImageContentController()
 		{
 		}
@@ -16,10 +14,10 @@ namespace Devnos.Popover.Sample
 		{
 			base.ViewDidLoad();
 			
-			this.View.BackgroundColor = UIColor.Magenta;
-			_ImageView = new UIImageView(UIImage.FromFile(NSBundle.MainBundle.PathForResource("Images/dave", "png")));
-			_ImageView.Frame = this.View.Frame;
-			this.View.AddSubview(_ImageView);
+//			this.View.BackgroundColor = UIColor.Magenta;
+			var imageView = new UIImageView(UIImage.FromFile(NSBundle.MainBundle.PathForResource("Images/dave", "png")));
+			this.View = imageView;
+			this.View.Frame = new System.Drawing.RectangleF(0, 0, 600, 450);
 		}
 	}
 }

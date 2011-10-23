@@ -26,9 +26,9 @@ namespace Devnos.Popover.Sample
 			_RootButton.TouchUpInside += (sender, e) => {
 				
 				SamplePopover.ContentSize = new SizeF(600, 450);
-//				SamplePopover.ContentController = _ImageController;
-				SamplePopover.ContentController = new UIViewController() { ContentSizeForViewInPopover = SamplePopover.ContentSize };
-				SamplePopover.PresentFromRect(_RootButton.Frame, this.View, UIPopoverArrowDirection.Right);
+				SamplePopover.ContentController = _ImageController;
+//				SamplePopover.ContentController = new UIViewController() { ContentSizeForViewInPopover = SamplePopover.ContentSize };
+				SamplePopover.PresentFromRect(_RootButton.Frame, this.View, UIPopoverArrowDirection.Left);
 				
 			};
 			this.View.AddSubview(_RootButton);

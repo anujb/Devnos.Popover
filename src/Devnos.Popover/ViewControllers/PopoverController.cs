@@ -51,9 +51,8 @@ namespace Devnos.Popover
 		{
 			this.DismissPopover(false);
 			
-			//obj-C selector calls [vc getView] which calls loadView
 			if(this.ContentViewController.View != null) { 
-				Console.WriteLine("Called ContentViewController.LoadView() with view getter");
+				//obj-C selector calls [vc getView] which calls loadView
 			}
 			
 			if(this.ContentSize == SizeF.Empty) {
@@ -158,11 +157,9 @@ namespace Devnos.Popover
 				this.IsPopoverVisible = false;
 				this.View.ResignFirstResponder();
 				
-				var userInitiatedString = userInitiated ? bool.TrueString : bool.FalseString;
-				
 				if(animated) {
 					this.View.UserInteractionEnabled = false;
-					UIView.BeginAnimations("FadeOut", new NSString(userInitiatedString).Handle);
+					UIView.BeginAnimations("FadeOut", new NSNumber(userInitiated ? 1 : 0).Handle);
 					UIView.SetAnimationDelegate(this);
 				    UIView.SetAnimationDidStopSelector(new MonoTouch.ObjCRuntime.Selector ("animationDidStop:finished:context:"));
 					UIView.SetAnimationDuration(FadeDuration);
@@ -177,14 +174,13 @@ namespace Devnos.Popover
 					this.View = null;
 					
 					BackgroundView.RemoveFromSuperview();
-					BackgroundView.Dispose();
 					BackgroundView = null;
 				}
 			}
 		}
 		
 		[Export ("animationDidStop:finished:context:")]
-		public void Handle_AnimationDidStop(NSString animationId, NSNumber finished, NSString boolString)
+		public void Handle_AnimationDidStop(NSString animationId, NSNumber finished, NSNumber userInitiated)
 		{
 			if(animationId == new NSString(@"FadeIn")) {
 				this.View.UserInteractionEnabled = true;
@@ -192,21 +188,23 @@ namespace Devnos.Popover
 				this.ContentViewController.ViewDidAppear(true);
 			}
 			else if (animationId == new NSString(@"FadeOut")) {
+				
 				IsPopoverVisible = false;
+				
 				this.ContentViewController.ViewDidDisappear(true);
 				
 				this.View.RemoveFromSuperview();
-//				this.View.Dispose();
-//				this.View = null;
+				this.View = null;
 				
-				BackgroundView.RemoveFromSuperview();
-//				BackgroundView.Dispose();
-//				BackgroundView = null;
+				this.BackgroundView.RemoveFromSuperview();
+				BackgroundView = null;
 				
-				if(this.DidDismiss != null)
-					DidDismiss(this);
+				if(userInitiated != null) {
+					if(userInitiated.IntValue == 1 && this.DidDismiss != null) {
+						DidDismiss(this);
+					}
 				}
-			
+			}
 		}
 		
 		public void UpdateBackgroundPassthroughViews()
@@ -235,7 +233,7 @@ namespace Devnos.Popover
 			base.Dispose(disposing);
 		}
 		
-		public static PopoverContainerModel DefaultContainerModel
+		public static PopoverContainerModel DefaultSimpleContainerModel
 		{
 			get
 			{
@@ -255,12 +253,44 @@ namespace Devnos.Popover
 					RightContentMargin = contentMargin,
 					BottomContentMargin = contentMargin,
 					ArrowMargin = 1.0f,
+					BackgroundImage = PopoverImage.SimpleBackgroundImage,
+					UpArrowImage = PopoverImage.SimpleUpArrowImage,
+					DownArrowImage = PopoverImage.SimpleDownArrowImage,
+					LeftArrowImage = PopoverImage.SimpleLeftArrowImage,
+					RightArrowImage = PopoverImage.SimpleRightArrowImage,
+				};
+			}
+		}
+		
+		public static PopoverContainerModel DefaultContainerModel
+		{
+			get
+			{
+				var bgMargin = 13.0f;
+				var contentMargin = 4.0f;
+				var bgCapSize = 31;
+				
+				var imageSize = new SizeF(30.0f, 30.0f);
+				
+				return new PopoverContainerModel()
+				{
+					LeftBgMargin = bgMargin,
+					RightBgMargin = bgMargin,
+					TopBgMargin = bgMargin,
+					BottomBgMargin = bgMargin,
+					LeftBgCapSize = bgCapSize,
+					TopBgCapSize = bgCapSize,
+					LeftContentMargin = contentMargin,
+					RightContentMargin = contentMargin,
+					BottomContentMargin = contentMargin,
+					ArrowMargin = 1.0f,
 					BackgroundImage = PopoverImage.BackgroundImage,
 					UpArrowImage = PopoverImage.UpArrowImage,
 					DownArrowImage = PopoverImage.DownArrowImage,
 					LeftArrowImage = PopoverImage.LeftArrowImage,
 					RightArrowImage = PopoverImage.RightArrowImage,
 				};
+				
 			}
 		}
 	}

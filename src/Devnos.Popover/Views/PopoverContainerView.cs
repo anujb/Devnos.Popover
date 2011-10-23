@@ -51,14 +51,16 @@ namespace Devnos.Popover
 		
 		public void InitializeFrame()
 		{
-			var frame = RectangleFExtensions.Offset(RectangleF.Union(_BackgroundRect, _ArrowRect), _Offset.X, _Offset.Y);
+//			var frame = RectangleFExtensions.Offset(RectangleF.Union(_BackgroundRect, _ArrowRect), _Offset.X, _Offset.Y);
+			var frame = RectangleF.Union(_BackgroundRect, _ArrowRect);
+			frame.X += _Offset.X;
+			frame.Y += _Offset.Y;
 			
 			//If arrow rect origin is < 0 the frame above is extended to include it so we should offset the other rects
 			
 			_ArrowOffset = new PointF(Math.Max(0, (-_ArrowRect.Location.X)), Math.Max(0, (-_ArrowRect.Location.Y)));
-			_BackgroundRect = RectangleFExtensions.Offset(_BackgroundRect, _ArrowOffset.X, _ArrowOffset.Y);
-			
-			_ArrowRect = RectangleFExtensions.Offset(_ArrowRect, _ArrowOffset.X, _ArrowOffset.Y);
+			_BackgroundRect.Offset(_ArrowOffset.X, _ArrowOffset.Y);
+			_ArrowRect.Offset(_ArrowOffset.X, _ArrowOffset.Y);
 			this.Frame = frame;
 		}
 		
@@ -241,7 +243,10 @@ namespace Devnos.Popover
 					//end switch statement
 					
 //					var bgFrame = bgRect.RectOffset(offset.X, offset.Y);
-					var bgFrame = RectangleFExtensions.Offset(bgRect, offset.X, offset.Y);
+//					var bgFrame = RectangleFExtensions.Offset(bgRect, offset.X, offset.Y);
+					var bgFrame = bgRect;
+					bgFrame.X += offset.X;
+					bgFrame.Y += offset.Y;
 					
 					var minMarginLeft = bgFrame.GetMinX() - displayArea.GetMinX();
 					var minMarginRight = displayArea.GetMaxX() - bgFrame.GetMaxY();

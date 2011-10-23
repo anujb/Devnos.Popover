@@ -83,50 +83,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\dave.png" />
-    <Content Include="..\Devnos.Popover\Images\popoverArrowDown.png">
-      <Link>Images\popoverArrowDown.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowDown%402x.png">
-      <Link>Images\popoverArrowDown%402x.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowDownSimple.png">
-      <Link>Images\popoverArrowDownSimple.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowLeft.png">
-      <Link>Images\popoverArrowLeft.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowLeft%402x.png">
-      <Link>Images\popoverArrowLeft%402x.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowLeftSimple.png">
-      <Link>Images\popoverArrowLeftSimple.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowRight.png">
-      <Link>Images\popoverArrowRight.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowRight%402x.png">
-      <Link>Images\popoverArrowRight%402x.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowRightSimple.png">
-      <Link>Images\popoverArrowRightSimple.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowUp.png">
-      <Link>Images\popoverArrowUp.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowUp%402x.png">
-      <Link>Images\popoverArrowUp%402x.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverArrowUpSimple.png">
-      <Link>Images\popoverArrowUpSimple.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverBg.png">
-      <Link>Images\popoverBg.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverBg%402x.png">
-      <Link>Images\popoverBg%402x.png</Link>
-    </Content>
-    <Content Include="..\Devnos.Popover\Images\popoverBgSimple.png">
-      <Link>Images\popoverBgSimple.png</Link>
-    </Content>
+    <Content Include="Images\popoverArrowDown.png" />
+    <Content Include="Images\popoverArrowDown%402x.png" />
+    <Content Include="Images\popoverArrowDownSimple.png" />
+    <Content Include="Images\popoverArrowLeft.png" />
+    <Content Include="Images\popoverArrowLeft%402x.png" />
+    <Content Include="Images\popoverArrowLeftSimple.png" />
+    <Content Include="Images\popoverArrowRight.png" />
+    <Content Include="Images\popoverArrowRight%402x.png" />
+    <Content Include="Images\popoverArrowRightSimple.png" />
+    <Content Include="Images\popoverArrowUp.png" />
+    <Content Include="Images\popoverArrowUp%402x.png" />
+    <Content Include="Images\popoverArrowUpSimple.png" />
+    <Content Include="Images\popoverBg.png" />
+    <Content Include="Images\popoverBg%402x.png" />
+    <Content Include="Images\popoverBgSimple.png" />
   </ItemGroup>
 </Project>
