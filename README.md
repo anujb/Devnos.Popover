@@ -30,9 +30,7 @@ Simply compile the project or "Add Existing Project..." to a valid MonoTouch 4.x
 
 ## See It in Action!
 
-<embed height="600" width="400"
-src="http://content.screencast.com/users/dmitrium/folders/Jing/media/f3a79bec-4900-436f-bd29-66c3af9b3c24/00000004.swf">
-
+<a href="http://screencast.com/t/lGwsvtEot9V"><img src="http://i.imgur.com/ZYX9Q.png"></img></a>
 
 ## Feedback
 
